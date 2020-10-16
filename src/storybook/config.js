@@ -103,6 +103,7 @@ function loadStories() {
 
   // Page types
   require("./stories/pageTypes/PageTypeListPage");
+  require("./stories/pageTypes/PageTypeDetailsPage");
 
   // Plugins
   require("./stories/plugins/PluginDetailsPage");
