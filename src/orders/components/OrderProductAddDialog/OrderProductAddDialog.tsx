@@ -248,7 +248,7 @@ const OrderProductAddDialog: React.FC<OrderProductAddDialogProps> = props => {
           <ResponsiveTable key="table">
             <TableBody>
               {renderCollection(
-                products,
+                products.filter(product => product.variants?.length > 0),
                 (product, productIndex) => (
                   <React.Fragment key={product ? product.id : "skeleton"}>
                     <TableRow>
