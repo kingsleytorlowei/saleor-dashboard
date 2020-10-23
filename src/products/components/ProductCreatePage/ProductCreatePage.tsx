@@ -11,19 +11,22 @@ import { MultiAutocompleteChoiceType } from "@saleor/components/MultiAutocomplet
 import PageHeader from "@saleor/components/PageHeader";
 import SaveButtonBar from "@saleor/components/SaveButtonBar";
 import SeoForm from "@saleor/components/SeoForm";
+import { ProductChannelListingErrorFragment } from "@saleor/fragments/types/ProductChannelListingErrorFragment";
 import { ProductErrorWithAttributesFragment } from "@saleor/fragments/types/ProductErrorWithAttributesFragment";
 import { TaxTypeFragment } from "@saleor/fragments/types/TaxTypeFragment";
 import useFormset from "@saleor/hooks/useFormset";
 import useStateFromProps from "@saleor/hooks/useStateFromProps";
 import { sectionNames } from "@saleor/intl";
 import ProductVariantPrice from "@saleor/products/components/ProductVariantPrice";
-import { ProductVariantChannelListingUpdate_productVariantChannelListingUpdate_productChannelListingErrors } from "@saleor/products/types/ProductVariantChannelListingUpdate";
 import {
   getAttributeInputFromProductType,
   getChoices,
   ProductType
 } from "@saleor/products/utils/data";
-import { validatePrice } from "@saleor/products/utils/validation";
+import {
+  validateCostPrice,
+  validatePrice
+} from "@saleor/products/utils/validation";
 import { SearchCategories_search_edges_node } from "@saleor/searches/types/SearchCategories";
 import { SearchCollections_search_edges_node } from "@saleor/searches/types/SearchCollections";
 import { SearchProductTypes_search_edges_node_productAttributes } from "@saleor/searches/types/SearchProductTypes";
@@ -79,7 +82,7 @@ export interface ProductCreatePageSubmitData extends FormData {
 
 interface ProductCreatePageProps {
   errors: ProductErrorWithAttributesFragment[];
-  channelsErrors: ProductVariantChannelListingUpdate_productVariantChannelListingUpdate_productChannelListingErrors[];
+  channelsErrors: ProductChannelListingErrorFragment[];
   allChannelsCount: number;
   currentChannels: ChannelData[];
   collections: SearchCollections_search_edges_node[];
@@ -280,7 +283,11 @@ export const ProductCreatePage: React.FC<ProductCreatePageProps> = ({
         const formDisabled =
           !productTypeChoice?.hasVariants &&
           (!data.sku ||
-            data.channelListing.some(channel => validatePrice(channel.price)));
+            data.channelListing.some(
+              channel =>
+                validatePrice(channel.price) ||
+                validateCostPrice(channel.costPrice)
+            ));
 
         return (
           <Container>

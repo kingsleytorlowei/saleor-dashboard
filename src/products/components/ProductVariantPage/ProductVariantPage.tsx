@@ -9,6 +9,7 @@ import { MetadataFormData } from "@saleor/components/Metadata";
 import Metadata from "@saleor/components/Metadata/Metadata";
 import PageHeader from "@saleor/components/PageHeader";
 import SaveButtonBar from "@saleor/components/SaveButtonBar";
+import { ProductChannelListingErrorFragment } from "@saleor/fragments/types/ProductChannelListingErrorFragment";
 import { ProductErrorWithAttributesFragment } from "@saleor/fragments/types/ProductErrorWithAttributesFragment";
 import { ProductVariant } from "@saleor/fragments/types/ProductVariant";
 import { WarehouseFragment } from "@saleor/fragments/types/WarehouseFragment";
@@ -16,14 +17,16 @@ import useFormset, {
   FormsetChange,
   FormsetData
 } from "@saleor/hooks/useFormset";
-import { ProductVariantChannelListingUpdate_productVariantChannelListingUpdate_productChannelListingErrors } from "@saleor/products/types/ProductVariantChannelListingUpdate";
 import { VariantUpdate_productVariantUpdate_errors } from "@saleor/products/types/VariantUpdate";
 import {
   getAttributeInputFromVariant,
   getStockInputFromVariant
 } from "@saleor/products/utils/data";
 import { createVariantChannelsChangeHandler } from "@saleor/products/utils/handlers";
-import { validatePrice } from "@saleor/products/utils/validation";
+import {
+  validateCostPrice,
+  validatePrice
+} from "@saleor/products/utils/validation";
 import { ReorderAction } from "@saleor/types";
 import { mapMetadataItemToInput } from "@saleor/utils/maps";
 import useMetadataChangeTrigger from "@saleor/utils/metadata/useMetadataChangeTrigger";
@@ -42,14 +45,8 @@ import ProductVariantNavigation from "../ProductVariantNavigation";
 import ProductVariantPrice from "../ProductVariantPrice";
 import ProductVariantSetDefault from "../ProductVariantSetDefault";
 
-export interface ProductVariantChannelData {
-  id: string;
-  currency: string;
-  name: string;
-  price: number;
-}
 export interface ProductVariantPageFormData extends MetadataFormData {
-  channelListing: ProductVariantChannelData[];
+  channelListing: ChannelPriceData[];
   sku: string;
   trackInventory: boolean;
   weight: string;
@@ -71,7 +68,7 @@ interface ProductVariantPageProps {
     | VariantUpdate_productVariantUpdate_errors[];
   header: string;
   channels: ChannelPriceData[];
-  channelErrors: ProductVariantChannelListingUpdate_productVariantChannelListingUpdate_productChannelListingErrors[];
+  channelErrors: ProductChannelListingErrorFragment[];
   loading?: boolean;
   placeholderImage?: string;
   saveButtonBarState: ConfirmButtonTransitionState;
@@ -206,8 +203,10 @@ const ProductVariantPage: React.FC<ProductVariantPageProps> = ({
               set,
               triggerChange
             );
-            const formDisabled = data.channelListing?.some(channel =>
-              validatePrice(channel.price)
+            const formDisabled = data.channelListing?.some(
+              channel =>
+                validatePrice(channel.price) ||
+                validateCostPrice(channel.costPrice)
             );
             return (
               <>

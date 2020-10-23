@@ -130,10 +130,17 @@ export interface ProductVariantChannelListingUpdate_productVariantChannelListing
   currency: string;
 }
 
+export interface ProductVariantChannelListingUpdate_productVariantChannelListingUpdate_variant_channelListing_costPrice {
+  __typename: "Money";
+  amount: number;
+  currency: string;
+}
+
 export interface ProductVariantChannelListingUpdate_productVariantChannelListingUpdate_variant_channelListing {
   __typename: "ProductVariantChannelListing";
   channel: ProductVariantChannelListingUpdate_productVariantChannelListingUpdate_variant_channelListing_channel;
   price: ProductVariantChannelListingUpdate_productVariantChannelListingUpdate_variant_channelListing_price | null;
+  costPrice: ProductVariantChannelListingUpdate_productVariantChannelListingUpdate_variant_channelListing_costPrice | null;
 }
 
 export interface ProductVariantChannelListingUpdate_productVariantChannelListingUpdate_variant_stocks_warehouse {
@@ -172,7 +179,7 @@ export interface ProductVariantChannelListingUpdate_productVariantChannelListing
   weight: ProductVariantChannelListingUpdate_productVariantChannelListingUpdate_variant_weight | null;
 }
 
-export interface ProductVariantChannelListingUpdate_productVariantChannelListingUpdate_productChannelListingErrors {
+export interface ProductVariantChannelListingUpdate_productVariantChannelListingUpdate_errors {
   __typename: "ProductChannelListingError";
   code: ProductErrorCode;
   field: string | null;
@@ -183,7 +190,7 @@ export interface ProductVariantChannelListingUpdate_productVariantChannelListing
 export interface ProductVariantChannelListingUpdate_productVariantChannelListingUpdate {
   __typename: "ProductVariantChannelListingUpdate";
   variant: ProductVariantChannelListingUpdate_productVariantChannelListingUpdate_variant | null;
-  productChannelListingErrors: ProductVariantChannelListingUpdate_productVariantChannelListingUpdate_productChannelListingErrors[];
+  errors: ProductVariantChannelListingUpdate_productVariantChannelListingUpdate_errors[];
 }
 
 export interface ProductVariantChannelListingUpdate {

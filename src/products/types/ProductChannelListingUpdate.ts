@@ -155,10 +155,17 @@ export interface ProductChannelListingUpdate_productChannelListingUpdate_product
   currency: string;
 }
 
+export interface ProductChannelListingUpdate_productChannelListingUpdate_product_variants_channelListing_costPrice {
+  __typename: "Money";
+  amount: number;
+  currency: string;
+}
+
 export interface ProductChannelListingUpdate_productChannelListingUpdate_product_variants_channelListing {
   __typename: "ProductVariantChannelListing";
   channel: ProductChannelListingUpdate_productChannelListingUpdate_product_variants_channelListing_channel;
   price: ProductChannelListingUpdate_productChannelListingUpdate_product_variants_channelListing_price | null;
+  costPrice: ProductChannelListingUpdate_productChannelListingUpdate_product_variants_channelListing_costPrice | null;
 }
 
 export interface ProductChannelListingUpdate_productChannelListingUpdate_product_variants {
@@ -207,7 +214,7 @@ export interface ProductChannelListingUpdate_productChannelListingUpdate_product
   taxType: ProductChannelListingUpdate_productChannelListingUpdate_product_taxType | null;
 }
 
-export interface ProductChannelListingUpdate_productChannelListingUpdate_productChannelListingErrors {
+export interface ProductChannelListingUpdate_productChannelListingUpdate_errors {
   __typename: "ProductChannelListingError";
   code: ProductErrorCode;
   field: string | null;
@@ -218,7 +225,7 @@ export interface ProductChannelListingUpdate_productChannelListingUpdate_product
 export interface ProductChannelListingUpdate_productChannelListingUpdate {
   __typename: "ProductChannelListingUpdate";
   product: ProductChannelListingUpdate_productChannelListingUpdate_product | null;
-  productChannelListingErrors: ProductChannelListingUpdate_productChannelListingUpdate_productChannelListingErrors[];
+  errors: ProductChannelListingUpdate_productChannelListingUpdate_errors[];
 }
 
 export interface ProductChannelListingUpdate {
